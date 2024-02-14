@@ -4,8 +4,8 @@
 /home/klaudia/ros2_ws/install/diagnostics_analyzer/lib/python3.8/site-packages/diagnostics_analyzer/__pycache__/__init__.cpython-38.pyc
 /home/klaudia/ros2_ws/install/diagnostics_analyzer/share/ament_index/resource_index/packages/diagnostics_analyzer
 /home/klaudia/ros2_ws/install/diagnostics_analyzer/share/diagnostics_analyzer/package.xml
-/home/klaudia/ros2_ws/install/diagnostics_analyzer/share/diagnostics_analyzer/launch/my_launch.py
-/home/klaudia/ros2_ws/install/diagnostics_analyzer/share/diagnostics_analyzer/launch/my_publisher_launch.yaml
+/home/klaudia/ros2_ws/install/diagnostics_analyzer/share/diagnostics_analyzer/launch
+/home/klaudia/ros2_ws/install/diagnostics_analyzer/share/diagnostics_analyzer/config/my_publisher_params.yaml
 /home/klaudia/ros2_ws/install/diagnostics_analyzer/lib/python3.8/site-packages/diagnostics_analyzer-0.0.0-py3.8.egg-info/requires.txt
 /home/klaudia/ros2_ws/install/diagnostics_analyzer/lib/python3.8/site-packages/diagnostics_analyzer-0.0.0-py3.8.egg-info/entry_points.txt
 /home/klaudia/ros2_ws/install/diagnostics_analyzer/lib/python3.8/site-packages/diagnostics_analyzer-0.0.0-py3.8.egg-info/top_level.txt

@@ -8,6 +8,7 @@ setup.py
 ../../build/diagnostics_analyzer/diagnostics_analyzer.egg-info/requires.txt
 ../../build/diagnostics_analyzer/diagnostics_analyzer.egg-info/top_level.txt
 ../../build/diagnostics_analyzer/diagnostics_analyzer.egg-info/zip-safe
+config/my_publisher_params.yaml
 diagnostics_analyzer/__init__.py
 diagnostics_analyzer/my_publisher.py
 launch/my_launch.py
