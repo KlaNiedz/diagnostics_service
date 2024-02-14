@@ -1,0 +1,7 @@
+battery_topic: '/battery_topic'
+available_memory_topic: '/available_memory'
+cpu_utilization_topic: '/cpu_utilization'
+diagnostics_topic: '/diagnostics'
+safe_voltage_range: [0.1, 1.0]
+safe_capacity_range: [0.15, 1.0]
+safe_utilization_range: [0, 0.8]

@@ -1,0 +1,3 @@
+[console_scripts]
+my_publisher = diagnostics_analyzer.my_publisher:main
+

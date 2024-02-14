@@ -1,0 +1,6 @@
+launch:
+
+- node:
+    pkg: "diagnostics_analyzer"
+    exec: "my_publisher"
+    name: "my_publisher"
