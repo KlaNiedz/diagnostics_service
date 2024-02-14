@@ -27,6 +27,7 @@ class MyPublisher(Node):
 		min_voltage = self.get_parameter('safe_voltage_range_min').get_parameter_value().double_value
 		max_voltage = self.get_parameter('safe_voltage_range_max').get_parameter_value().double_value
 
+		print(min_voltage)
 		if not self.is_voltage_safe(voltage, min_voltage, max_voltage):
 			self.publish_warning_battery(voltage)
 
