@@ -1,6 +1,13 @@
-launch:
+# launch:
 
-- node:
-    pkg: "diagnostics_analyzer"
-    exec: "my_publisher"
-    name: "my_publisher"
+# - node:
+#     pkg: "diagnostics_analyzer"
+#     exec: "my_publisher"
+#     name: "my_publisher"
+#     ros__parameters:
+#       safe_voltage_range_max: 1.0
+#       safe_voltage_range_min: 0.5
+#       safe_capacity_range_max: 1.0
+#       safe_capacity_range_min: 0.1
+#       safe_utilization_range_max: 0.8
+#       safe_utilization_range_min: 0.0

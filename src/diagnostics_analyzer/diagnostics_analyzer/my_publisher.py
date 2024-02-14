@@ -13,20 +13,26 @@ class MyPublisher(Node):
 		self.subscriber_memory = self.create_subscription(Float32, 'available_memory', self.memory_callback, 5)
 		self.subscriber_cpu = self.create_subscription(Float32, 'cpu_utilization', self.cpu_callback, 5)
 		self.publisher = self.create_publisher(DiagnosticArray, 'diagnostics', 5)
-		self.safe_voltage_range = (0.1, 1.0)
-		self.safe_capacity_range = (0.15, 1.0)
-		self.safe_utilization_range = (0, 0.8)
+
+		self.declare_parameter('safe_voltage_range_max', 1.0)
+		self.declare_parameter('safe_voltage_range_min', 0.1)
+		self.declare_parameter('safe_capacity_range_max', 1.0)
+		self.declare_parameter('safe_capacity_range_min', 0.1)
+		self.declare_parameter('safe_utilization_range_max', 0.8)
+		self.declare_parameter('safe_utilization_range_min', 0.0)
 	
 	def battery_callback(self, msg):
 		voltage = msg.data
-		voltage = round(voltage, 1)
 
-		if not self.is_voltage_safe(voltage):
+		min_voltage = self.get_parameter('safe_voltage_range_min').get_parameter_value().double_value
+		max_voltage = self.get_parameter('safe_voltage_range_max').get_parameter_value().double_value
+
+		if not self.is_voltage_safe(voltage, min_voltage, max_voltage):
 			self.publish_warning_battery(voltage)
 
-	def is_voltage_safe(self, voltage):
-		return self.safe_voltage_range[0] < voltage <= self.safe_voltage_range[1]
-        
+	def is_voltage_safe(self, voltage, min_voltage, max_voltage):
+		return min_voltage <= voltage <= max_voltage
+	
 	def publish_warning_battery(self, voltage):
 		diagnostic_array_msg = DiagnosticArray()
 		diagnostic_status_msg = DiagnosticStatus()
@@ -39,13 +45,15 @@ class MyPublisher(Node):
         
 	def memory_callback(self, msg):
 		capacity = msg.data
-		capacity = round(capacity, 2)
+
+		min_capacity = self.get_parameter('safe_capacity_range_min').get_parameter_value().double_value
+		max_capacity = self.get_parameter('safe_capacity_range_max').get_parameter_value().double_value
 		
-		if not self.is_capacity_safe(capacity):
+		if not self.is_capacity_safe(capacity, min_capacity, max_capacity):
 			self.publish_warning_memory(capacity)
     	
-	def is_capacity_safe(self, capacity):
-		return self.safe_capacity_range[0] < capacity <= self.safe_capacity_range[1]
+	def is_capacity_safe(self, capacity, min_capacity, max_capacity):
+		return min_capacity < capacity <= max_capacity
 	
 	def publish_warning_memory(self, capacity):
 		diagnostic_array_msg = DiagnosticArray()
@@ -59,13 +67,15 @@ class MyPublisher(Node):
 
 	def cpu_callback(self, msg):
 		utilization = msg.data
-		utilization = round(utilization, 2)
-		
-		if not self.is_utilization_safe(utilization):
+
+		min_utilization = self.get_parameter('safe_utilization_range_min').get_parameter_value().double_value
+		max_utilization = self.get_parameter('safe_utilization_range_max').get_parameter_value().double_value
+
+		if not self.is_utilization_safe(utilization, min_utilization, max_utilization):
 			self.publish_warning_cpu(utilization)
     	
-	def is_utilization_safe(self, utilization):
-		return self.safe_utilization_range[0] <= utilization <= self.safe_utilization_range[1]
+	def is_utilization_safe(self, utilization, min_utilization, max_utilization):
+		return min_utilization <= utilization <= max_utilization
 	
 	def publish_warning_cpu(self, utilization):
 		diagnostic_array_msg = DiagnosticArray()
