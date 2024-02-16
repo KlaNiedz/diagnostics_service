@@ -1,7 +1,13 @@
 my_publisher: 
   ros__parameters:
+      # batter_topic: /batter_topic
+      # available_memory: /available_memory
+      # cpu_utilization: /cpu_utilization
+      new_topic: /new_topic
+      safe_range_max: 1.0
+      safe_range_min: 0.1
       safe_voltage_range_max: 1.0
-      safe_voltage_range_min: 0.5
+      safe_voltage_range_min: 0.1
       safe_capacity_range_max: 1.0
       safe_capacity_range_min: 0.1
       safe_utilization_range_max: 0.8

@@ -9,10 +9,17 @@ class MyPublisher(Node):
 	def __init__(self):
 		super().__init__('my_publisher')
 
+		self.declare_parameter('new_topic', '/new_topic')
+
 		self.subscriber_battery = self.create_subscription(Float32, 'battery_topic', self.battery_callback, 5)
 		self.subscriber_memory = self.create_subscription(Float32, 'available_memory', self.memory_callback, 5)
 		self.subscriber_cpu = self.create_subscription(Float32, 'cpu_utilization', self.cpu_callback, 5)
+		self.subscriber_data = self.create_subscription(Float32, 'new_topic', self.new_topic_callback, 5)
 		self.publisher = self.create_publisher(DiagnosticArray, 'diagnostics', 5)
+
+		self.declare_parameter('message', None)		
+		self.declare_parameter('safe_range_max', 1.0)
+		self.declare_parameter('safe_range_min', 0.1)
 
 		self.declare_parameter('safe_voltage_range_max', 1.0)
 		self.declare_parameter('safe_voltage_range_min', 0.1)
@@ -20,6 +27,37 @@ class MyPublisher(Node):
 		self.declare_parameter('safe_capacity_range_min', 0.1)
 		self.declare_parameter('safe_utilization_range_max', 0.8)
 		self.declare_parameter('safe_utilization_range_min', 0.0)
+
+
+	def new_topic_callback(self, msg):
+		data = msg.data
+
+		min_data = self.get_parameter('safe_range_min').get_parameter_value().double_value
+		max_data = self.get_parameter('safe_range_max').get_parameter_value().double_value
+
+		if not self.is_data_safe(data, min_data, max_data):
+			self.publish_warning_new_topic(data)
+
+		new_topic = self.get_parameter('new_topic').get_parameter_value().string_value
+		self.subscriber_data = self.create_subscription(Float32, new_topic, self.new_topic_callback, 5)
+
+
+	def is_data_safe(self, data, min_data, max_data):
+		return min_data <= data <= max_data
+	
+	def publish_warning_new_topic(self, data):
+
+		message = self.get_parameter('message').get_parameter_value().string_value
+
+		diagnostic_array_msg = DiagnosticArray()
+		diagnostic_status_msg = DiagnosticStatus()
+		diagnostic_status_msg.name = 'Value Error'
+		diagnostic_status_msg.level = DiagnosticStatus.WARN
+		diagnostic_status_msg.message = message
+		diagnostic_status_msg.values = [KeyValue(key='Data', value=str(data))]
+		diagnostic_array_msg.status.append(diagnostic_status_msg)
+		self.publisher.publish(diagnostic_array_msg)
+	
 	
 	def battery_callback(self, msg):
 		voltage = msg.data
@@ -27,7 +65,6 @@ class MyPublisher(Node):
 		min_voltage = self.get_parameter('safe_voltage_range_min').get_parameter_value().double_value
 		max_voltage = self.get_parameter('safe_voltage_range_max').get_parameter_value().double_value
 
-		print(min_voltage)
 		if not self.is_voltage_safe(voltage, min_voltage, max_voltage):
 			self.publish_warning_battery(voltage)
 
